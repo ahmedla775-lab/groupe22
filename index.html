@@ -225,8 +225,9 @@ backText5.innerText=t.back;
 }
 applyLang(localStorage.getItem("lang")||"ar");
 
-let users=JSON.parse(localStorage.getItem("users")||"{}");
-let current=null;
+// ===== بيانات المستخدم =====
+let users = JSON.parse(localStorage.getItem("users")||"{}");
+let current = null;
 
 const levels=[
 {name:"Trial",daily:50},
@@ -235,63 +236,66 @@ const levels=[
 {name:"Level 3",daily:500}
 ];
 
+const loginDiv = document.getElementById("login");
+const homeDiv = document.getElementById("home");
+
+// ===== دوال المنصة =====
 function login(){
-let u=uEl.value=uEl=document.getElementById("u").value.trim();
-let p=document.getElementById("p").value;
-if(!u||!p)return alert("Fill data");
-if(!users[u])users[u]={p,bal:0,lvl:0,refs:[],task:""};
-if(users[u].p!==p)return alert("Wrong password");
-current=u;
-localStorage.setItem("users",JSON.stringify(users));
-loginDiv.classList.add("hidden");
-homeDiv.classList.remove("hidden");
-update();
-renderLevels();
+  let u = document.getElementById("u").value.trim();
+  let p = document.getElementById("p").value;
+  if(!u || !p) return alert("Fill data");
+
+  if(!users[u]) users[u] = {p, bal:0, lvl:0, refs:[], task:""};
+  if(users[u].p !== p) return alert("Wrong password");
+
+  current = u;
+  localStorage.setItem("users", JSON.stringify(users));
+  loginDiv.classList.add("hidden");
+  homeDiv.classList.remove("hidden");
+  update();
+  renderLevels();
 }
 
 function update(){
-balance.innerText=users[current].bal+" DA";
-pLevel.innerText=levels[users[current].lvl].name;
-referrals.innerText=users[current].refs.length;
-pName.innerText=current;
-pLvl.innerText=levels[users[current].lvl].name;
-pRefs.innerText=users[current].refs.length;
-localStorage.setItem("users",JSON.stringify(users));
+  balance.innerText = users[current].bal+" DA";
+  pLevel.innerText = levels[users[current].lvl].name;
+  referrals.innerText = users[current].refs.length;
+  pName.innerText = current;
+  pLvl.innerText = levels[users[current].lvl].name;
+  pRefs.innerText = users[current].refs.length;
+  localStorage.setItem("users", JSON.stringify(users));
 }
 
 function openPage(id){
-document.querySelectorAll(".container").forEach(c=>c.classList.add("hidden"));
-document.getElementById(id).classList.remove("hidden");
+  document.querySelectorAll(".container").forEach(c=>c.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
 }
 function home(){openPage("home");}
 
 function doTask(){
-let t=new Date().toDateString();
-if(users[current].task===t)return alert("Already done");
-users[current].task=t;
-users[current].bal+=levels[users[current].lvl].daily;
-update();
+  let t = new Date().toDateString();
+  if(users[current].task === t) return alert("Already done");
+  users[current].task = t;
+  users[current].bal += levels[users[current].lvl].daily;
+  update();
 }
 
 function deposit(){
-window.open(`https://wa.me/${ADMIN_WHATS}`);
+  window.open(`https://wa.me/${ADMIN_WHATS}`);
 }
 function withdraw(){
-window.open(`https://wa.me/${ADMIN_WHATS}`);
+  window.open(`https://wa.me/${ADMIN_WHATS}`);
 }
 function openSupport(){
-window.open(`https://wa.me/${ADMIN_WHATS}`);
+  window.open(`https://wa.me/${ADMIN_WHATS}`);
 }
 
 function renderLevels(){
-levelList.innerHTML="";
-levels.forEach(l=>{
-levelList.innerHTML+=`<div class="card"><h3>${l.name}</h3><p>Daily profit: ${l.daily} DA</p></div>`;
-});
+  levelList.innerHTML="";
+  levels.forEach(l=>{
+    levelList.innerHTML+=`<div class="card"><h3>${l.name}</h3><p>Daily profit: ${l.daily} DA</p></div>`;
+  });
 }
-
-const loginDiv=document.getElementById("login");
-const homeDiv=document.getElementById("home");
 </script>
 
 </body>
